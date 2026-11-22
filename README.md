@@ -157,15 +157,16 @@ All files for a creator are stored cleanly in `downloads/<creator>/`:
 ```text
 downloads/
 └── rbbca/
-    ├── file_list.json                                                      # Complete page-wise post list
-    ├── progress.json                                                       # State tracking for resuming
-    ├── [91536913] taking my time to corrupt this good christian boy ✝️.jpg  # Downloaded image
-    ├── [91536918] edge me for the whole day if u want ur entire room soaked wi.jpg
-    ├── [91536919] my response to all the fucked up twisted shit yall say to me.mp4  # Downloaded video
-    └── [91536920] after convincing me to skip class：.mp4
+    ├── file_list.json    # Complete page-wise post list
+    ├── progress.json     # State tracking for resuming
+    └── files/            # All downloaded media files
+        ├── [91536913] taking my time to corrupt this good christian boy ✝️.jpg
+        ├── [91536918] edge me for the whole day if u want ur entire room soaked wi.jpg
+        ├── [91536919] my response to all the fucked up twisted shit yall say to me.mp4
+        └── [91536920] after convincing me to skip class：.mp4
 ```
 
-> **Note**: No post subfolders or `.txt` files are created. All media is organized directly inside the creator directory with clear, human-readable names.
+> **Note**: All media files are downloaded directly into the `files/` subfolder. No post subfolders or `.txt` files are created.
 
 ---
 

@@ -295,7 +295,7 @@ export class CoomerDownloader {
     log(`  MODE: Download Content (Resumable)`);
     log(`  Creator: ${info.username} (${info.service})`);
     log(`  Starting URL: ${startUrl}`);
-    log(`  Destination: ${storage.getCreatorDir()}`);
+    log(`  Files Destination: ${storage.getFilesDir()}`);
     log(`==================================================\n`);
 
     // Setup graceful exit handler to save state on Ctrl+C
@@ -421,10 +421,10 @@ export class CoomerDownloader {
 
             log(` -> Found ${media.files.length} file(s) in .post-body`);
 
-            const destDir = storage.getCreatorDir();
+            const destDir = storage.getFilesDir();
             const postFiles: PostFile[] = [];
 
-            // Download each media file directly into creator dir
+            // Download each media file into the creator's files/ folder
             for (let fIdx = 0; fIdx < media.files.length; fIdx++) {
               if (isTerminating) break;
 
@@ -437,15 +437,18 @@ export class CoomerDownloader {
                   ? `[${post.id}] ${post.safeTitle}${ext}`
                   : `[${post.id}] ${post.safeTitle}_${fIdx + 1}${ext}`;
 
-              // Check if file is already completed and exists on disk
+              // Check if file is already completed and exists on disk in files/
               const existingRecord = post.files?.find((pf) => pf.filename === filename);
+              const targetPath = path.join(destDir, filename);
               if (
                 existingRecord &&
                 existingRecord.status === "completed" &&
-                existingRecord.localPath &&
-                existsSync(existingRecord.localPath)
+                ((existingRecord.localPath && existsSync(existingRecord.localPath)) || existsSync(targetPath))
               ) {
                 log(`   [File ${fIdx + 1}/${media.files.length}] [Skipped] Already exists on disk: ${filename}`);
+                if (!existingRecord.localPath || !existsSync(existingRecord.localPath)) {
+                  existingRecord.localPath = targetPath;
+                }
                 postFiles.push(existingRecord);
                 continue;
               }
@@ -550,7 +553,7 @@ export class CoomerDownloader {
       log(`  Pages Scanned:     ${Object.keys(state.pages).length}`);
       log(`  Files Downloaded:  ${state.totalFilesDownloaded}`);
       log(`  Total Downloaded:  ${formatBytes(state.totalBytesDownloaded)}`);
-      log(`  Destination:       ${storage.getCreatorDir()}`);
+      log(`  Files Destination: ${storage.getFilesDir()}`);
       log(`  Progress File:     ${storage.getProgressFilePath()}`);
       log(`  File List (JSON):  ${storage.getFileListJsonPath()}`);
       log(`==================================================\n`);

@@ -6,6 +6,7 @@ export class StorageManager {
   private baseDir: string;
   private creator: string;
   private creatorDir: string;
+  private filesDir: string;
   private progressPath: string;
   private listJsonPath: string;
 
@@ -13,12 +14,17 @@ export class StorageManager {
     this.baseDir = baseOutputDir;
     this.creator = creator;
     this.creatorDir = path.join(this.baseDir, this.creator);
+    this.filesDir = path.join(this.creatorDir, "files");
     this.progressPath = path.join(this.creatorDir, "progress.json");
     this.listJsonPath = path.join(this.creatorDir, "file_list.json");
   }
 
   public getCreatorDir(): string {
     return this.creatorDir;
+  }
+
+  public getFilesDir(): string {
+    return this.filesDir;
   }
 
   public getProgressFilePath(): string {
@@ -31,6 +37,7 @@ export class StorageManager {
 
   public async initDirs(): Promise<void> {
     await mkdir(this.creatorDir, { recursive: true });
+    await mkdir(this.filesDir, { recursive: true });
   }
 
   /**
