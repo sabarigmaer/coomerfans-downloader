@@ -176,3 +176,6 @@ dist
 
 # Downloaded media
 downloads/
+
+# C++ desktop app build
+build-cpp/

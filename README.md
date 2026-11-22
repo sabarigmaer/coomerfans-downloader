@@ -49,6 +49,22 @@ A CLI tool for collecting post lists and downloading media (images & videos) fro
 
 ---
 
+## Desktop App (native C++)
+
+A native desktop GUI lives in [`cpp/`](cpp/). It is a C++17 port of the downloader engine with a [Dear ImGui](https://github.com/ocornut/imgui) front-end drawn through a small built-in X11/OpenGL layer. No Electron, Qt or GTK is required. It reads and writes the same `progress.json` / `file_list.json` as the CLI, so you can start in one and resume in the other.
+
+**Requirements:** a C++17 compiler, CMake 3.16+, X11 + OpenGL development headers (Debian/Ubuntu: `sudo apt install build-essential cmake libx11-dev libgl-dev`), and `curl` at runtime. The first configure downloads Dear ImGui and nlohmann/json.
+
+```bash
+cmake -S cpp -B build-cpp -G Ninja        # or omit -G Ninja to use Make
+cmake --build build-cpp
+./build-cpp/coomerfans-gui [optional-url]
+```
+
+Paste a creator URL, pick a mode and folder, press **Start**. **Stop** kills the in-flight transfer, saves progress and lets you resume. Optional helpers: `zenity`/`kdialog` enable the Browse button; `wl-paste`/`xclip`/`xsel` enable clipboard paste. Set `GUI_SCALE=1.5` for HiDPI. Linux/X11 only (works under XWayland).
+
+---
+
 ## Prerequisites
 
 1. **[Bun](https://bun.sh)** (v1.1+):
